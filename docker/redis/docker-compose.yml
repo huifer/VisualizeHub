@@ -1,0 +1,20 @@
+version: '3'
+services:
+  redis:
+    # 镜像名称以及版本号
+    image: 'redis:6.0'
+    # 失败后总是重启
+    restart: always
+    # 自定义容器名
+    container_name: docker_redis
+    # 文件夹以及文件映射
+    volumes:
+      - ./datadir:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./logs:/logs
+    command:
+      # 以配置文件的方式启动 redis.conf
+      redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      # 端口号
+      - '16379:6379'

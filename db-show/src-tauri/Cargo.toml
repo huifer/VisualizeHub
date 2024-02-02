@@ -1,0 +1,38 @@
+[package]
+name = "db-show"
+version = "0.0.0"
+description = "A Tauri App"
+authors = ["you"]
+license = ""
+repository = ""
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+tauri = { version = "1.5", features = ["shell-open"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sqlx = { version = "0.7", features = ["json", "time", "mysql", "postgres", "runtime-async-std", "runtime-tokio"] }
+sqlx-core = "0.7.0"
+sqlx-mysql = "0.7.0"
+tokio = { version = "1", features = ["full"] }
+uuid = { version = "1.7.0", features = ["v4"] }
+redis = {version =  "0.21.0", features = ["tls","default"] }
+regex = "1.10.3"
+mongodb = "2.0.0"
+mqtt = "0.1.4"
+rumqtt = "0.31.0"
+futures-lite = "2.2.0"
+elastic = "0.21.0-pre.5"
+reqwest = "0.11"
+#paho-mqtt = { git = "https://github.com/eclipse/paho.mqtt.rust.git", branch = "master" }
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+
+sqlite = ["sqlx/sqlite", "sqlx/runtime-tokio"]
+mysql = ["sqlx/mysql", "sqlx/runtime-tokio-rustls"]
+postgres = ["sqlx/postgres", "sqlx/runtime-tokio-rustls"]

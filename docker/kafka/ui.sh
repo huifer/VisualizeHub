@@ -1,0 +1,1 @@
+docker run -d -p 9001:8080 -v ./data:/usr/local/kafka-map/data -e DEFAULT_USERNAME=admin -e DEFAULT_PASSWORD=admin --name kafka-map --restart always dushixiang/kafka-map:latest

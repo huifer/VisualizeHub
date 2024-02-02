@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  dremio:
+    image: dremio/dremio-oss:20.1
+    container_name: dremio
+    ports:
+      - 9047:9047
+      - 31010:31010
+      - 45678:45678
+    volumes:
+      - dremio:/opt/dremio/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+volumes:
+  dremio:
