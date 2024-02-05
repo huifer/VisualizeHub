@@ -7,6 +7,7 @@ pub static MYSQL_CONFIG_JSON: &str = "mysql.json";
 pub static REDIS_CONFIG_JSON: &str = "redis.json";
 pub static MONGO_CONFIG_JSON: &str = "mongo.json";
 pub static ES_CONFIG_JSON: &str = "es.json";
+pub static ZK_CONFIG_JSON: &str = "zk.json";
 pub static MQTT_CONFIG_JSON: &str = "mqtt.json";
 
 pub fn init_home() {
@@ -20,6 +21,7 @@ pub fn init_home() {
         create_file_if_not_exists(format!("{}/{}/{}", home_directory, HOME_NAME, MONGO_CONFIG_JSON).as_str(), "").expect("创建 mongo 配置失败");
         create_file_if_not_exists(format!("{}/{}/{}", home_directory, HOME_NAME, ES_CONFIG_JSON).as_str(), "").expect("创建 es 配置失败");
         create_file_if_not_exists(format!("{}/{}/{}", home_directory, HOME_NAME, MQTT_CONFIG_JSON).as_str(), "").expect("创建 es 配置失败");
+        create_file_if_not_exists(format!("{}/{}/{}", home_directory, HOME_NAME, ZK_CONFIG_JSON).as_str(), "").expect("创建 zookeeper 配置失败");
     }
 }
 

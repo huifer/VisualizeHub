@@ -10,3 +10,5 @@ pub mod es_config_storage;
 
 pub mod mqtt_config;
 pub mod mqtt_config_storage;
+pub mod zk_config_storage;
+pub mod zk_config;
