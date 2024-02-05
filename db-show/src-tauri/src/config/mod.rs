@@ -12,3 +12,5 @@ pub mod mqtt_config;
 pub mod mqtt_config_storage;
 pub mod zk_config_storage;
 pub mod zk_config;
+pub mod influxdb_config;
+pub mod influxdb_config_storage;

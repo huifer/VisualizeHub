@@ -1,6 +1,3 @@
-use base64;
-use crypto::buffer::{ReadBuffer, WriteBuffer};
-use rand::RngCore;
 
 #[cfg(test)]
 mod tests {

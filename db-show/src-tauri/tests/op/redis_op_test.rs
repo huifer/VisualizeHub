@@ -46,7 +46,7 @@ mod tests {
             // 打印当前页的键和类型
             match result.data {
                 Some(scan_key_result) => {
-                    for (key) in scan_key_result.keys {
+                    for key in scan_key_result.keys {
                         println!("Key: {}, Type: {:?}, ttl {:?}", key.key_name, key.key_type, key.ttl);
                     }
 

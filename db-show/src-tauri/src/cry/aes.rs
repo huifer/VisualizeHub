@@ -42,11 +42,12 @@ impl AesCipher {
 }
 
 impl Cipher for AesCipher {
+    #[warn(deprecated)]
     fn encrypt(&self, data: String) -> String {
         base64::encode(&aes256_cbc_encrypt(data.as_bytes(), &self.key, &self.iv).unwrap())
     }
 
-    fn decrypt(&self, ciphertext: String) -> Option<String> {
+    #[warn(deprecated)] fn decrypt(&self, ciphertext: String) -> Option<String> {
         let result = aes256_cbc_decrypt(&base64::decode(&ciphertext).unwrap(), &self.key, &self.iv)
             .map(|bytes| String::from_utf8_lossy(&bytes).to_string());
 

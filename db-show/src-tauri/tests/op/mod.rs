@@ -4,3 +4,4 @@ mod mongo_op_test;
 mod mqtt_op_test;
 mod es_op_test;
 mod zk_op_test;
+mod influxdb_test;

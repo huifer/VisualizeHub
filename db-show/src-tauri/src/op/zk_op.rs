@@ -35,7 +35,7 @@ impl ZookeeperOperation {
         let bytes_data: Vec<u8> = string_data.into_bytes(); // 将数据转换为 Vec<u8>
 
         // 设置节点数据，通过移动所有权避免生命周期问题
-        let stat = zk
+        let _stat = zk
             .set_data(path.as_str(), Some(res.1.version), bytes_data)
             .await?;
 
@@ -69,7 +69,7 @@ impl ZookeeperOperation {
     /// 返回: Result<ZookeeperData, Box<dyn std::error::Error>>
     pub async fn get_zookeeper_data(&self, path: &str) -> Result<ZookeeperData, Box<dyn std::error::Error>> {
         // 连接到 ZooKeeper 服务器
-        let (zk, default_watcher) = ZooKeeper::connect(&self.url.parse()?)
+        let (zk, _default_watcher) = ZooKeeper::connect(&self.url.parse()?)
             .await?;
 
         // 获取节点数据及其状态信息
@@ -109,7 +109,7 @@ impl ZookeeperOperation {
     /// 返回: Result<String, Box<dyn std::error::Error>>
     pub async fn create_and_set_data(&self, path: String, string_data: String) -> Result<String, Box<dyn std::error::Error>> {
         // 连接到 ZooKeeper 服务器
-        let (zk, default_watcher) = ZooKeeper::connect(&self.url.parse()?)
+        let (zk, _default_watcher) = ZooKeeper::connect(&self.url.parse()?)
             .await?;
 
         // 对参数进行控制 FIXME: 这里可能需要进一步的参数验证
@@ -124,7 +124,7 @@ impl ZookeeperOperation {
             )
             .await?;
 
-        Ok(created_path)
+        Ok(created_path.unwrap())
     }
 }
 
