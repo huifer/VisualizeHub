@@ -1,7 +1,5 @@
 use influxdb2::models::{Buckets, Organizations};
 
-use db_show::op::influxdb2_op::Influxdb2Operation;
-
 use crate::cmd::cmd_entity::{
     GetListBucketsInfluxdb, GetListFieldsInfluxdb, GetListMeasurementTagInfluxdb,
     GetListMeasurementsInfluxdb, GetListOrgInfluxdb,
@@ -10,6 +8,7 @@ use crate::config::influxdb_config::InfluxDBUserPassword;
 use crate::config::influxdb_config_storage::{
     InfluxDBStorageEntity, InfluxDBStorageManager, InfluxDBStorageService,
 };
+use crate::op::influxdb2_op::Influxdb2Operation;
 use crate::resp::resp::Response;
 
 #[tauri::command]
@@ -50,7 +49,7 @@ pub async fn get_list_buckets(param: GetListBucketsInfluxdb) -> Result<Response<
                 let response = Response::new("设置数据成功", Some(buckets));
                 Ok(response)
             } else {
-                Ok(Response::from_error("没有数据"));
+                Err(())
             }
         }
     };
@@ -84,7 +83,7 @@ pub async fn get_list_organizations(
                 let response = Response::new("设置数据成功", Some(buckets));
                 Ok(response)
             } else {
-                Ok(Response::from_error("没有数据"));
+                Err(())
             }
         }
     };
@@ -118,7 +117,7 @@ pub async fn get_list_measurements(
                 let response = Response::new("设置数据成功", Some(buckets));
                 Ok(response)
             } else {
-                Ok(Response::from_error("没有数据"));
+                Err(())
             }
         }
     };
@@ -150,7 +149,7 @@ pub async fn get_list_fields(param: GetListFieldsInfluxdb) -> Result<Response<Ve
                 let response = Response::new("设置数据成功", Some(buckets));
                 Ok(response)
             } else {
-                Ok(Response::from_error("没有数据"));
+                Err(())
             }
         }
     };
@@ -184,7 +183,7 @@ pub async fn get_list_measurement_tag_keys(
                 let response = Response::new("设置数据成功", Some(buckets));
                 Ok(response)
             } else {
-                Ok(Response::from_error("没有数据"));
+                Err(())
             }
         }
     };
