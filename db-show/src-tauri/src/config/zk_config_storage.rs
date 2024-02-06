@@ -10,17 +10,7 @@ pub struct ZkStorageEntity {
     /// 2. ssl
     pub r#type: i32,
     pub id: String,
-    /// Zk username.
-    pub username: String,
-
-    /// Zk password.
-    pub password: String,
-
-    /// Zk host (hostname or IP address).
-    pub host: String,
-
-    /// Zk port number.
-    pub port: u16,
+    pub url:String ,
 
     /// Zk database name.
     pub name: String,
@@ -69,10 +59,8 @@ impl ZkStorageService for ZkStorageManager {
         let v = ZkStorageEntity {
             r#type: USER_PASSWORD_MODEL,
             id: uid.to_string(),
-            username: param.username,
-            password: param.password,
-            host: param.host,
-            port: param.port,
+
+            url: param.url,
             name: param.name,
         };
         self.values.push(v);

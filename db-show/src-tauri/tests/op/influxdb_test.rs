@@ -37,7 +37,7 @@ mod tests {
 
         let result3 = operation.get_list_fields("test".to_string(), "cpu_load_short".to_string()).await;
         dbg!(result3);
-        let result4 = operation.get_tags("test".to_string(), "cpu_load_short".to_string()).await;
+        let result4 = operation.get_list_measurement_tag_keys("test".to_string(), "cpu_load_short".to_string()).await;
         dbg!(result4);
         // write_sample_data(bucket, client).await?;
         Ok(())

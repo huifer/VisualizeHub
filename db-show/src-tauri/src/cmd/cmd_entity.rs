@@ -44,6 +44,7 @@ pub struct GetRedisValueParam {
     pub expiration_seconds: i32,
 
 }
+
 #[derive(Deserialize, Serialize, Debug)]
 pub struct SetRedisHashParam {
     pub key_type: String,
@@ -52,7 +53,7 @@ pub struct SetRedisHashParam {
     pub db_index: i32,
 
     #[serde(default)]
-    pub old_field_values:HashMap<String,String>,
+    pub old_field_values: HashMap<String, String>,
     #[serde(default)]
     pub new_field_values: HashMap<String, String>,
 
@@ -67,7 +68,6 @@ pub struct ChangeRedisSetValueParam {
 
     pub db_index: i32,
 
-
     pub old: String,
     #[serde(default)]
     pub new_val: String,
@@ -80,7 +80,6 @@ pub struct ChangeRedisListValueParam {
     pub db_config_id: String,
 
     pub db_index: i32,
-
 
     pub old: String,
     #[serde(default)]
@@ -117,3 +116,31 @@ pub struct GetMongoInfoParam {
     pub id: String,
 
 }
+
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct SetZookeeperDataParam {
+    pub id: String,
+    pub path: String,
+    pub string_data: String,
+}
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetZookeeperChildrenParam {
+    pub id: String,
+    pub path: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetZookeeperDataParam {
+    pub id: String,
+    pub path: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct CreateZookeeperDataParam {
+    pub id: String,
+    pub path: String,
+    pub string_data: String,
+
+}
+
