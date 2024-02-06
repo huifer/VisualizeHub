@@ -7,22 +7,14 @@ use crate::cmd::mysql_cmd::{
     add_mysql_config, get_db_names, get_db_status, get_tables_names, query_all_mysql,
     show_table_create_sql,
 };
-use crate::cmd::redis_cmd::{add_redis_config, query_all_redis, redis_add_set,
-                            redis_change_hash,
-                            redis_change_list,
-                            redis_change_set,
-                            redis_change_zset,
-                            redis_db_count, redis_delete_redis_key, redis_get_hash_data,
-                            redis_get_list_data,
-                            redis_get_set_data,
-                            redis_get_string_data,
-                            redis_get_zset_data,
-                            redis_info,
-                            redis_keys_page,
-                            redis_remove_hash_member,
-                            redis_remove_list_member, redis_remove_set_member, redis_remove_zset_member,
-                            redis_set_redis_key_expire,
-                            redis_set_string_data, };
+use crate::cmd::redis_cmd::{
+    add_redis_config, query_all_redis, redis_add_set, redis_change_hash, redis_change_list,
+    redis_change_set, redis_change_zset, redis_db_count, redis_delete_redis_key,
+    redis_get_hash_data, redis_get_list_data, redis_get_set_data, redis_get_string_data,
+    redis_get_zset_data, redis_info, redis_keys_page, redis_remove_hash_member,
+    redis_remove_list_member, redis_remove_set_member, redis_remove_zset_member,
+    redis_set_redis_key_expire, redis_set_string_data,
+};
 use crate::cmd::zk_cmd::*;
 use crate::env::init_file::init_home;
 
@@ -83,6 +75,11 @@ fn main() {
             get_children_of_parent,
             get_zookeeper_data,
             create_and_set_data,
+            get_list_buckets,
+            get_list_organizations,
+            get_list_measurements,
+            get_list_fields,
+            get_list_measurement_tag_keys,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

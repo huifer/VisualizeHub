@@ -1,11 +1,10 @@
-use std::collections::{BTreeMap, HashMap};
 use serde::{Deserialize, Serialize};
+use std::collections::{BTreeMap, HashMap};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetMysqlTablesParam {
     pub id: String,
     pub db_name: String,
-
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -13,15 +12,12 @@ pub struct GetMysqlTablesCreatedParam {
     pub id: String,
     pub table_name: String,
     pub db_name: String,
-
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetRedisInfoParam {
     pub id: String,
-
 }
-
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetRedisKeysParam {
@@ -29,9 +25,7 @@ pub struct GetRedisKeysParam {
     pub db_index: i32,
     pub page: usize,
     pub page_size: usize,
-
 }
-
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetRedisValueParam {
@@ -42,7 +36,6 @@ pub struct GetRedisValueParam {
 
     #[serde(default)]
     pub expiration_seconds: i32,
-
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -56,9 +49,7 @@ pub struct SetRedisHashParam {
     pub old_field_values: HashMap<String, String>,
     #[serde(default)]
     pub new_field_values: HashMap<String, String>,
-
 }
-
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ChangeRedisSetValueParam {
@@ -84,9 +75,7 @@ pub struct ChangeRedisListValueParam {
     pub old: String,
     #[serde(default)]
     pub new_val: String,
-
 }
-
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct SetRedisValueParam {
@@ -96,9 +85,7 @@ pub struct SetRedisValueParam {
     pub db_index: i32,
 
     pub value: String,
-
 }
-
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ChangeRedisZSetValueParam {
@@ -114,9 +101,7 @@ pub struct ChangeRedisZSetValueParam {
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetMongoInfoParam {
     pub id: String,
-
 }
-
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct SetZookeeperDataParam {
@@ -124,6 +109,7 @@ pub struct SetZookeeperDataParam {
     pub path: String,
     pub string_data: String,
 }
+
 #[derive(Deserialize, Serialize, Debug)]
 pub struct GetZookeeperChildrenParam {
     pub id: String,
@@ -141,6 +127,37 @@ pub struct CreateZookeeperDataParam {
     pub id: String,
     pub path: String,
     pub string_data: String,
-
 }
 
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetListBucketsInfluxdb {
+    pub id: String,
+    pub limit: u8,
+    pub offset: u64,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetListOrgInfluxdb {
+    pub id: String,
+    pub limit: i64,
+    pub offset: i64,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetListMeasurementsInfluxdb {
+    pub id: String,
+    pub bucket: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetListFieldsInfluxdb {
+    pub id: String,
+    pub bucket: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct GetListMeasurementTagInfluxdb {
+    pub id: String,
+    pub bucket: String,
+    pub measurement: String,
+}
