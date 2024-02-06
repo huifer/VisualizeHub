@@ -128,6 +128,52 @@ impl VhostsManager {
             Err(e) => Ok(Vec::new()),
         }
     }
+
+
+    pub async fn set_permissions(
+        &self,
+        name: &str,
+        user: &str,
+        configure: &str,
+        write: &str,
+        read: &str,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let client = Client::new();
+
+        let api_url = format!(
+            "http://{}:{}/api/permissions/{}/{}",
+            self.rabbitmq_info.host, self.rabbitmq_info.port, name, user
+        );
+
+        let mut headers = reqwest::header::HeaderMap::new();
+        headers.insert("Content-Type", "application/json".parse()?);
+
+
+        let data = json!({
+            "vhost": name,
+            "username": user,
+            "configure": configure,
+            "write": write,
+            "read": read,
+        });
+
+        let response = client
+            .put(&api_url)
+            .basic_auth(
+                &self.rabbitmq_info.username,
+                Some(&self.rabbitmq_info.password),
+            )
+            .headers(headers)
+            .json(&data)
+            .send()
+            .await?;
+        response.error_for_status()?;
+        Ok(())
+    }
+
+    pub async fn topic_permissin(){
+
+    }
 }
 
 #[cfg(test)]
@@ -182,6 +228,22 @@ mod tests {
 
         match vhosts_manager.permissions(vhost_name).await {
             Ok(permis) => println!("{}", permis.len()),
+            Err(e) => eprintln!("Error creating virtual host: {:?}", e),
+        }
+    }
+
+    #[tokio::test]
+    async fn set_permissions() {
+        Builder::from_default_env()
+            .filter(None, LevelFilter::Debug)
+            .init();
+        let rabbitmq_info = mock();
+
+        let vhosts_manager = VhostsManager::new(rabbitmq_info);
+        let vhost_name = "foo";
+
+        match vhosts_manager.set_permissions(vhost_name, "guest", ".*", ".*", ".*").await {
+            Ok(()) => println!("set success", ),
             Err(e) => eprintln!("Error creating virtual host: {:?}", e),
         }
     }
