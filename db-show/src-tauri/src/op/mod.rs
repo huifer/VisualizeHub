@@ -7,3 +7,4 @@ pub mod mqtt_op;
 pub mod mysql_op;
 pub mod redis_op;
 pub mod zk_op;
+mod rabbit_op;
