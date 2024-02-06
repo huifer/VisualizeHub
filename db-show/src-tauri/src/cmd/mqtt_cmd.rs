@@ -1,5 +1,7 @@
 use crate::config::mqtt_config::MqttUserPassword;
-use crate::config::mqtt_config_storage::{MqttStorageEntity, MqttStorageManager, MqttStorageService};
+use crate::config::mqtt_config_storage::{
+    MqttStorageEntity, MqttStorageManager, MqttStorageService,
+};
 use crate::resp::resp::Response;
 
 #[tauri::command]

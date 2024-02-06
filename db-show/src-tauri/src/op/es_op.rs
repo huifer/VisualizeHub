@@ -3,11 +3,9 @@ use crate::resp::resp::Response;
 
 pub struct EsOperation {
     pub url: String,
-
 }
 
 impl EsOperation {
-
     pub async fn get_index_stats(&self) -> Response<String> {
         let nodes_stats_url = format!("{}/_cat/indices", self.url);
 
@@ -24,12 +22,9 @@ impl EsOperation {
 
                 let nodes_stats = response.text().await.unwrap_or_else(|_| String::new());
 
-
                 Response::new(description, Some(nodes_stats))
             }
-            Err(err) => {
-                Response::from_error(format!("请求失败: {}", err))
-            }
+            Err(err) => Response::from_error(format!("请求失败: {}", err)),
         }
     }
 
@@ -49,17 +44,12 @@ impl EsOperation {
 
                 let nodes_stats = response.text().await.unwrap_or_else(|_| String::new());
 
-
                 Response::new(description, Some(nodes_stats))
             }
-            Err(err) => {
-                Response::from_error(format!("请求失败: {}", err))
-            }
+            Err(err) => Response::from_error(format!("请求失败: {}", err)),
         }
     }
-    pub async fn get_cluster_health(
-        &self
-    ) -> Response<ClusterHealth> {
+    pub async fn get_cluster_health(&self) -> Response<ClusterHealth> {
         let cluster_health_url = format!("{}/_cluster/health", self.url);
 
         match reqwest::get(&cluster_health_url).await {
@@ -72,13 +62,12 @@ impl EsOperation {
                 };
                 let cluster_health = response.text().await.unwrap_or_else(|_| String::new());
 
-                let cluster_health: ClusterHealth = serde_json::from_str(cluster_health.as_str()).unwrap();
+                let cluster_health: ClusterHealth =
+                    serde_json::from_str(cluster_health.as_str()).unwrap();
 
-                Response::new(description, Some(cluster_health), )
+                Response::new(description, Some(cluster_health))
             }
-            Err(err) => {
-                Response::from_error(format!("请求失败: {}", err))
-            }
+            Err(err) => Response::from_error(format!("请求失败: {}", err)),
         }
     }
     pub fn new(string: String) -> Self {

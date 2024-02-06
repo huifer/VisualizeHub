@@ -1,4 +1,3 @@
-
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -32,8 +31,4 @@ impl<T> Response<T> {
             data: None,
         }
     }
-
 }
-
-
-

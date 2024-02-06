@@ -1,8 +1,10 @@
+use crate::config::es_config::ESUserPassword;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use crate::config::es_config::ESUserPassword;
 
-use crate::env::init_file::{ES_CONFIG_JSON, get_home_directory, HOME_NAME, read_file_content, write_string_to_file};
+use crate::env::init_file::{
+    get_home_directory, read_file_content, write_string_to_file, ES_CONFIG_JSON, HOME_NAME,
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ESStorageEntity {
@@ -38,12 +40,13 @@ static USER_PASSWORD_MODEL: i32 = 1;
 
 pub struct ESStorageManager {
     pub values: Vec<ESStorageEntity>,
-
 }
 
 impl ESStorageManager {
     pub fn new() -> Self {
-        ESStorageManager { values: read_redis_json() }
+        ESStorageManager {
+            values: read_redis_json(),
+        }
     }
 }
 
@@ -84,10 +87,13 @@ impl ESStorageService for ESStorageManager {
     }
 }
 
-
 pub fn write_redis_json(data: String) {
     if let Ok(home_directory) = get_home_directory().ok_or("无法获取 HOME 目录") {
-        write_string_to_file(format!("{}/{}/{}", home_directory, HOME_NAME, ES_CONFIG_JSON).as_str(), data.as_str()).expect("写入ES-json失败");
+        write_string_to_file(
+            format!("{}/{}/{}", home_directory, HOME_NAME, ES_CONFIG_JSON).as_str(),
+            data.as_str(),
+        )
+        .expect("写入ES-json失败");
     }
 }
 

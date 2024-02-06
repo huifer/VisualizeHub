@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use db_show::config::mysql_config_storage::{MySQLStorageManager, MysqlStorageService};
     use db_show::config::mysql_config::MysqlUserPassword;
+    use db_show::config::mysql_config_storage::{MySQLStorageManager, MysqlStorageService};
 
     #[test]
     fn test() {

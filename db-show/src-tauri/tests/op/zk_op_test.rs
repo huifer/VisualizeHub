@@ -23,7 +23,9 @@ async fn main() {
     //     .await
     //     .unwrap();
     let operation = ZookeeperOperation::new("127.0.0.1:2181".to_string());
-    let x = operation.create_and_set_data("/b".to_string(), "aa".to_string()).await;
+    let x = operation
+        .create_and_set_data("/b".to_string(), "aa".to_string())
+        .await;
     dbg!(x.unwrap());
 }
 
@@ -39,7 +41,9 @@ async fn status() {
 #[tokio::test]
 async fn set_zookeeper_data() {
     let operation = ZookeeperOperation::new("127.0.0.1:2181".to_string());
-    let result = operation.set_zookeeper_data("/example".to_string(), "jklas".to_string()).await;
+    let result = operation
+        .set_zookeeper_data("/example".to_string(), "jklas".to_string())
+        .await;
 }
 
 /// feature: 查询子节点

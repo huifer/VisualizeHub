@@ -1,7 +1,7 @@
 use futures_lite::StreamExt;
-use mongodb::{Client, IndexModel};
 use mongodb::bson::{doc, Document};
 use mongodb::options::ClientOptions;
+use mongodb::{Client, IndexModel};
 
 use crate::config::mongo_config::MongoUserPassword;
 use crate::op::mongo_entity::{
@@ -14,7 +14,6 @@ pub struct MongoOperation {
 }
 
 impl MongoOperation {
-
     pub async fn drop_database(&self, database_name: &str) -> Response<bool> {
         match self.client.database(database_name).drop(None).await {
             Ok(_) => Response::new("删除数据库成功", Some(true)),
@@ -22,21 +21,47 @@ impl MongoOperation {
         }
     }
 
-    pub async fn create_collection(&self, database_name: &str, collection_name: &str) -> Response<bool> {
-        match self.client.database(database_name).create_collection(collection_name, None).await {
+    pub async fn create_collection(
+        &self,
+        database_name: &str,
+        collection_name: &str,
+    ) -> Response<bool> {
+        match self
+            .client
+            .database(database_name)
+            .create_collection(collection_name, None)
+            .await
+        {
             Ok(_) => Response::new("创建建collection成功", Some(true)),
             Err(err) => Response::from_error(format!("创建集合时出错: {}", err)),
         }
     }
 
-    pub async fn drop_collection(&self, database_name: &str, collection_name: &str) -> Response<bool> {
-        match self.client.database(database_name).collection::<Document>(collection_name).drop(None).await {
+    pub async fn drop_collection(
+        &self,
+        database_name: &str,
+        collection_name: &str,
+    ) -> Response<bool> {
+        match self
+            .client
+            .database(database_name)
+            .collection::<Document>(collection_name)
+            .drop(None)
+            .await
+        {
             Ok(_) => Response::new("删除集合成功", Some(true)),
             Err(err) => Response::from_error(format!("删除集合时出错: {}", err)),
         }
     }
-    pub async fn get_collection_indexes(&self, database_name: &str, collection_name: &str) -> Response<Vec<IndexModel>> {
-        let collection: mongodb::Collection<Document> = self.client.database(database_name).collection(collection_name);
+    pub async fn get_collection_indexes(
+        &self,
+        database_name: &str,
+        collection_name: &str,
+    ) -> Response<Vec<IndexModel>> {
+        let collection: mongodb::Collection<Document> = self
+            .client
+            .database(database_name)
+            .collection(collection_name);
 
         match collection.list_indexes(None).await {
             Ok(mut cursor) => {

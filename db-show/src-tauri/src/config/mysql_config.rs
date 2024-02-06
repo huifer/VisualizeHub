@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Struct representing MySQL connection information.
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct MysqlUserPassword {
     /// MySQL username.
     pub username: String,
@@ -18,6 +18,3 @@ pub struct MysqlUserPassword {
     /// MySQL database name.
     pub name: String,
 }
-
-
-

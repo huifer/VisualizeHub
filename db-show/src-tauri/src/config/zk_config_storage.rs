@@ -1,8 +1,10 @@
+use crate::config::zk_config::ZkUserPassword;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use crate::config::zk_config::ZkUserPassword;
 
-use crate::env::init_file::{ZK_CONFIG_JSON, get_home_directory, HOME_NAME, read_file_content, write_string_to_file};
+use crate::env::init_file::{
+    get_home_directory, read_file_content, write_string_to_file, HOME_NAME, ZK_CONFIG_JSON,
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ZkStorageEntity {
@@ -10,7 +12,7 @@ pub struct ZkStorageEntity {
     /// 2. ssl
     pub r#type: i32,
     pub id: String,
-    pub url:String ,
+    pub url: String,
 
     /// Zk database name.
     pub name: String,
@@ -28,12 +30,13 @@ static USER_PASSWORD_MODEL: i32 = 1;
 
 pub struct ZkStorageManager {
     pub values: Vec<ZkStorageEntity>,
-
 }
 
 impl ZkStorageManager {
     pub fn new() -> Self {
-        ZkStorageManager { values: read_redis_json() }
+        ZkStorageManager {
+            values: read_redis_json(),
+        }
     }
 }
 
@@ -72,10 +75,13 @@ impl ZkStorageService for ZkStorageManager {
     }
 }
 
-
 pub fn write_redis_json(data: String) {
     if let Ok(home_directory) = get_home_directory().ok_or("无法获取 HOME 目录") {
-        write_string_to_file(format!("{}/{}/{}", home_directory, HOME_NAME, ZK_CONFIG_JSON).as_str(), data.as_str()).expect("写入Zk-json失败");
+        write_string_to_file(
+            format!("{}/{}/{}", home_directory, HOME_NAME, ZK_CONFIG_JSON).as_str(),
+            data.as_str(),
+        )
+        .expect("写入Zk-json失败");
     }
 }
 

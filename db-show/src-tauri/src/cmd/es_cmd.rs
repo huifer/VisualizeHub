@@ -2,8 +2,6 @@ use crate::config::es_config::ESUserPassword;
 use crate::config::es_config_storage::{ESStorageEntity, ESStorageManager, ESStorageService};
 use crate::resp::resp::Response;
 
-
-
 #[tauri::command]
 pub fn query_all_es() -> Response<Vec<ESStorageEntity>> {
     let manager = ESStorageManager::new();

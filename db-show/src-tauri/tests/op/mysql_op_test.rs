@@ -30,7 +30,9 @@ mod tests {
         dbg!(&result);
         // 验证结果
         match result {
-            Response { status_code, data, .. } => {
+            Response {
+                status_code, data, ..
+            } => {
                 assert_eq!(status_code, SUCCESS);
 
                 if let Some(database_info) = data {
@@ -48,7 +50,6 @@ mod tests {
     async fn test_get_supported_encodings() {
         let mysql_operation = get_mysql_operation().await;
 
-
         // 执行 get_supported_encodings 方法
         let result = mysql_operation.get_supported_encodings().await;
 
@@ -57,7 +58,9 @@ mod tests {
 
         // 验证结果
         match result {
-            Response { status_code, data, .. } => {
+            Response {
+                status_code, data, ..
+            } => {
                 assert_eq!(status_code, SUCCESS);
 
                 if let Some(encodings) = data {
@@ -77,7 +80,6 @@ mod tests {
     async fn test_get_collation() {
         let mysql_operation = get_mysql_operation().await;
 
-
         // 执行 get_collation 方法
         let result = mysql_operation.get_collation(Some("armscii8")).await;
 
@@ -86,7 +88,9 @@ mod tests {
 
         // 验证结果
         match result {
-            Response { status_code, data, .. } => {
+            Response {
+                status_code, data, ..
+            } => {
                 assert_eq!(status_code, SUCCESS);
 
                 if let Some(collations) = data {
@@ -120,23 +124,27 @@ mod tests {
         let table_name = "device_data";
 
         // 执行 get_table_create_statement 方法
-        let result = mysql_operation.get_table_create_statement(database_name, table_name).await;
+        let result = mysql_operation
+            .get_table_create_statement(database_name, table_name)
+            .await;
 
         // 输出结果
         dbg!(&result);
 
         // 验证结果
         match result {
-            Response { status_code, data, .. } => {
+            Response {
+                status_code, data, ..
+            } => {
                 assert_eq!(status_code, SUCCESS);
 
                 if let Some(create_statement) = data {
                     // 输出表的创建语句
                     dbg!(&create_statement);
 
-
                     // 根据实际情况添加其他验证
-                } else {}
+                } else {
+                }
             }
         }
     }
@@ -146,14 +154,18 @@ mod tests {
         let mysql_operation = get_mysql_operation().await;
 
         // 执行 get_table_columns_info 方法
-        let result = mysql_operation.get_table_columns_info("chunan", "construction_data_files").await;
+        let result = mysql_operation
+            .get_table_columns_info("chunan", "construction_data_files")
+            .await;
 
         // 输出结果
         dbg!(&result);
 
         // 验证结果
         match result {
-            Response { status_code, data, .. } => {
+            Response {
+                status_code, data, ..
+            } => {
                 assert_eq!(status_code, SUCCESS);
 
                 if let Some(columns_info) = data {
@@ -180,16 +192,19 @@ mod tests {
     async fn test_get_table_indexes_info() {
         let mysql_operation = get_mysql_operation().await;
 
-
         // 执行 get_table_indexes_info 方法
-        let result = mysql_operation.get_table_indexes_info("chunan", "construction_data_files").await;
+        let result = mysql_operation
+            .get_table_indexes_info("chunan", "construction_data_files")
+            .await;
 
         // 输出结果
         dbg!(&result);
 
         // 验证结果
         match result {
-            Response { status_code, data, .. } => {
+            Response {
+                status_code, data, ..
+            } => {
                 assert_eq!(status_code, SUCCESS);
 
                 if let Some(indexes_info) = data {
@@ -230,16 +245,16 @@ mod tests {
     async fn test_get_detailed_table_info() {
         let mysql_operation = get_mysql_operation().await;
 
-
         // 指定数据库名和表名
         let database_name = "chunan";
         let table_name = "construction_data_files";
 
         // 执行测试函数
-        let result = mysql_operation.get_detailed_table_info(database_name, table_name).await;
+        let result = mysql_operation
+            .get_detailed_table_info(database_name, table_name)
+            .await;
         dbg!(&result);
     }
-
 
     async fn get_mysql_operation() -> MysqlOperation {
         let credentials = MysqlUserPassword {

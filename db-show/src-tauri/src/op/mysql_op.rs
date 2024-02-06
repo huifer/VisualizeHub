@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
-use sqlx::{MySql, Pool};
 use sqlx::mysql::MySqlConnectOptions;
+use sqlx::{MySql, Pool};
 use sqlx_core::row::Row;
 
 use crate::config::mysql_config::MysqlUserPassword;
@@ -10,10 +10,13 @@ pub struct MysqlOperation {
     pool: Pool<MySql>,
 }
 
-
 impl MysqlOperation {
     pub async fn new(credentials: &MysqlUserPassword) -> Result<Self, sqlx::Error> {
-        let options = MySqlConnectOptions::new().username(&credentials.username).password(&credentials.password).host(&credentials.host).port(credentials.port);
+        let options = MySqlConnectOptions::new()
+            .username(&credentials.username)
+            .password(&credentials.password)
+            .host(&credentials.host)
+            .port(credentials.port);
 
         let pool = Pool::connect_with(options).await?;
 
@@ -47,7 +50,6 @@ impl MysqlOperation {
         }
     }
 
-
     pub async fn get_database_info(&self) -> Response<DatabaseInfo> {
         let version_query = "SELECT VERSION()";
         let status_query = "SHOW STATUS";
@@ -58,10 +60,13 @@ impl MysqlOperation {
         match (version_result, status_result) {
             (Ok(version_row), Ok(status_rows)) => {
                 let version: String = version_row.get(0);
-                let status_info: Vec<StatusInfo> = status_rows.iter().map(|row| StatusInfo {
-                    name: row.get(0),
-                    value: row.get(1),
-                }).collect();
+                let status_info: Vec<StatusInfo> = status_rows
+                    .iter()
+                    .map(|row| StatusInfo {
+                        name: row.get(0),
+                        value: row.get(1),
+                    })
+                    .collect();
 
                 let database_info = DatabaseInfo {
                     version,
@@ -117,8 +122,11 @@ impl MysqlOperation {
         }
     }
 
-
-    pub async fn get_table_create_statement(&self, database_name: &str, table_name: &str) -> Response<String> {
+    pub async fn get_table_create_statement(
+        &self,
+        database_name: &str,
+        table_name: &str,
+    ) -> Response<String> {
         let query = format!("SHOW CREATE TABLE {}.{}", database_name, table_name);
 
         match sqlx::query(&query).fetch_optional(&self.pool).await {
@@ -133,7 +141,11 @@ impl MysqlOperation {
             Err(err) => Response::from_error(format!("Error: {}", err)),
         }
     }
-    pub async fn get_table_columns_info(&self, database_name: &str, table_name: &str) -> Response<Vec<ColumnInfo>> {
+    pub async fn get_table_columns_info(
+        &self,
+        database_name: &str,
+        table_name: &str,
+    ) -> Response<Vec<ColumnInfo>> {
         let query = format!(
             "SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_SCALE, IS_NULLABLE, COLUMN_KEY, COLUMN_COMMENT
                  FROM information_schema.COLUMNS
@@ -169,7 +181,11 @@ impl MysqlOperation {
         }
     }
 
-    pub async fn get_table_indexes_info(&self, database_name: &str, table_name: &str) -> Response<Vec<IndexInfo>> {
+    pub async fn get_table_indexes_info(
+        &self,
+        database_name: &str,
+        table_name: &str,
+    ) -> Response<Vec<IndexInfo>> {
         let query = format!(
             "SELECT INDEX_NAME, COLUMN_NAME, INDEX_TYPE, INDEX_COMMENT
          FROM information_schema.STATISTICS
@@ -185,13 +201,11 @@ impl MysqlOperation {
             Ok(rows) => {
                 let indexes_info: Vec<IndexInfo> = rows
                     .iter()
-                    .map(|row| {
-                        IndexInfo {
-                            index_name: row.get(0),
-                            column_name: row.get(1),
-                            index_type: row.get(2),
-                            index_comment: row.try_get(3).ok(),
-                        }
+                    .map(|row| IndexInfo {
+                        index_name: row.get(0),
+                        column_name: row.get(1),
+                        index_type: row.get(2),
+                        index_comment: row.try_get(3).ok(),
                     })
                     .collect();
 
@@ -201,14 +215,16 @@ impl MysqlOperation {
         }
     }
 
-
-    pub async fn get_table_foreign_keys_info(&self, database_name: &str, table_name: &str) -> Response<Vec<ForeignKeyInfo>> {
+    pub async fn get_table_foreign_keys_info(
+        &self,
+        database_name: &str,
+        table_name: &str,
+    ) -> Response<Vec<ForeignKeyInfo>> {
         let query = format!(
             "SELECT CONSTRAINT_NAME, COLUMN_NAME, REFERENCED_TABLE_SCHEMA, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
              FROM information_schema.KEY_COLUMN_USAGE
              WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND REFERENCED_TABLE_NAME IS NOT NULL"
         );
-
 
         let mut foreign_keys_info = Vec::new();
         let result = match sqlx::query(&query)
@@ -232,14 +248,16 @@ impl MysqlOperation {
                              WHERE CONSTRAINT_NAME = ?"
                     );
 
-
                     let constraints_row = sqlx::query(&query_constraints)
                         .bind(&constraint_name)
                         .fetch_optional(&self.pool)
                         .await;
 
                     let (update_rule, delete_rule) = match constraints_row {
-                        Ok(Some(row)) => (row.get::<Option<String>, _>(0), row.get::<Option<String>, _>(1)),
+                        Ok(Some(row)) => (
+                            row.get::<Option<String>, _>(0),
+                            row.get::<Option<String>, _>(1),
+                        ),
                         Ok(None) => (None, None),
                         Err(_) => (None, None),
                     };
@@ -256,9 +274,7 @@ impl MysqlOperation {
                 }
                 Response::new("Success", Some(foreign_keys_info))
             }
-            Err(err) => {
-                Response::from_error(format!("Error fetching foreign keys: {:?}", err))
-            }
+            Err(err) => Response::from_error(format!("Error fetching foreign keys: {:?}", err)),
         };
         result
     }
@@ -268,47 +284,40 @@ impl MysqlOperation {
         database_name: &str,
         table_name: &str,
     ) -> Response<DetailedTableInfo> {
-        let query =
-            format!(
-                "SHOW TABLE STATUS from {}  like \"{}\"",
-                database_name, table_name
-            );
-        let result = match sqlx::query(&query)
-            .fetch_optional(&self.pool)
-            .await
-        {
+        let query = format!(
+            "SHOW TABLE STATUS from {}  like \"{}\"",
+            database_name, table_name
+        );
+        let result = match sqlx::query(&query).fetch_optional(&self.pool).await {
             Ok(row) => {
                 if let Some(row) = row {
-                    let detailed_table_info =
-                        DetailedTableInfo {
-                            name: row.try_get("Name").ok(),
-                            engine: row.try_get("Engine").ok(),
-                            version: row.try_get("Version").ok(),
-                            row_format: row.try_get("Row_format").ok(),
-                            rows: row.try_get("Rows").ok(),
-                            avg_row_length: row.try_get("Avg_row_length").ok(),
-                            data_length: row.try_get("Data_length").ok(),
-                            max_data_length: row.try_get("Max_data_length").ok(),
-                            index_length: row.try_get("Index_length").ok(),
-                            data_free: row.try_get("Data_free").ok(),
-                            auto_increment: row.try_get("Auto_increment").ok(),
-                            create_time: row.try_get("Create_time").ok(),
-                            update_time: row.try_get("Update_time").ok(),
-                            check_time: row.try_get("Check_time").ok(),
-                            collation: row.try_get("Collation").ok(),
-                            checksum: row.try_get("Checksum").ok(),
-                            create_options: row.try_get("Create_options").ok(),
-                            comment: row.try_get("Comment").ok(),
-                        };
+                    let detailed_table_info = DetailedTableInfo {
+                        name: row.try_get("Name").ok(),
+                        engine: row.try_get("Engine").ok(),
+                        version: row.try_get("Version").ok(),
+                        row_format: row.try_get("Row_format").ok(),
+                        rows: row.try_get("Rows").ok(),
+                        avg_row_length: row.try_get("Avg_row_length").ok(),
+                        data_length: row.try_get("Data_length").ok(),
+                        max_data_length: row.try_get("Max_data_length").ok(),
+                        index_length: row.try_get("Index_length").ok(),
+                        data_free: row.try_get("Data_free").ok(),
+                        auto_increment: row.try_get("Auto_increment").ok(),
+                        create_time: row.try_get("Create_time").ok(),
+                        update_time: row.try_get("Update_time").ok(),
+                        check_time: row.try_get("Check_time").ok(),
+                        collation: row.try_get("Collation").ok(),
+                        checksum: row.try_get("Checksum").ok(),
+                        create_options: row.try_get("Create_options").ok(),
+                        comment: row.try_get("Comment").ok(),
+                    };
 
                     Response::new("Success", Some(detailed_table_info))
                 } else {
                     Response::from_error("Table not found")
                 }
             }
-            Err(err) => {
-                Response::from_error(format!("Error fetching table info: {:?}", err))
-            }
+            Err(err) => Response::from_error(format!("Error fetching table info: {:?}", err)),
         };
 
         result
@@ -391,9 +400,8 @@ pub struct ForeignKeyInfo {
     // 引用表列名
     pub update_rule: Option<String>,
     // 更新规则（可选）
-    pub delete_rule: Option<String>,      // 删除规则（可选）
+    pub delete_rule: Option<String>, // 删除规则（可选）
 }
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ColumnInfo {

@@ -6,5 +6,5 @@ pub struct InfluxDBUserPassword {
     pub name: String,
     pub auth_token: String,
     pub org: String,
-    pub version:String,
+    pub version: String,
 }

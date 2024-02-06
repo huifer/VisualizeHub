@@ -15,7 +15,6 @@ mod tests {
         let token = "eh5fkkCC-diSWJRe4a-Oi3yJ8Lcnb1d_iciDvGvHWeF8beoSALcE8S9fJgIqAXYEfORPRmLD6vLHn6Xwo_RySQ==";
         let influx_url = "http://localhost:8086";
 
-
         let client = influxdb2::Client::new(influx_url, org, "mytoken");
         let operation = Influxdb2Operation::new(InfluxDBUserPassword {
             url: influx_url.to_string(),
@@ -25,24 +24,25 @@ mod tests {
             version: "2".to_string(),
         });
 
-
         let result = operation.get_list_buckets(10, 0).await;
         // dbg!(result);
         let result1 = operation.get_list_organizations(10, 0).await;
         // dbg!(result1);
 
-
         let result2 = operation.get_list_measurements("test".to_string()).await;
         dbg!(result2);
 
-        let result3 = operation.get_list_fields("test".to_string(), "cpu_load_short".to_string()).await;
+        let result3 = operation
+            .get_list_fields("test".to_string(), "cpu_load_short".to_string())
+            .await;
         dbg!(result3);
-        let result4 = operation.get_list_measurement_tag_keys("test".to_string(), "cpu_load_short".to_string()).await;
+        let result4 = operation
+            .get_list_measurement_tag_keys("test".to_string(), "cpu_load_short".to_string())
+            .await;
         dbg!(result4);
         // write_sample_data(bucket, client).await?;
         Ok(())
     }
-
 
     async fn write_sample_data(bucket: &str, client: Client) -> Result<(), Box<dyn Error>> {
         for index in 0..100 {

@@ -47,7 +47,10 @@ mod tests {
             match result.data {
                 Some(scan_key_result) => {
                     for key in scan_key_result.keys {
-                        println!("Key: {}, Type: {:?}, ttl {:?}", key.key_name, key.key_type, key.ttl);
+                        println!(
+                            "Key: {}, Type: {:?}, ttl {:?}",
+                            key.key_name, key.key_type, key.ttl
+                        );
                     }
 
                     println!("======");
@@ -66,7 +69,6 @@ mod tests {
             }
         }
     }
-
 
     #[test]
     pub fn test_get_string_data() {
@@ -132,13 +134,16 @@ mod tests {
         println!();
     }
 
-
     #[test]
     pub fn test_set_list_data() {
         let operation = get_redis_op();
 
         let db_index = 1;
-        let values = vec!["value1".to_string(), "value2".to_string(), "value3".to_string()];
+        let values = vec![
+            "value1".to_string(),
+            "value2".to_string(),
+            "value3".to_string(),
+        ];
 
         let result = operation.set_list_data(db_index, "list".to_string(), values);
 
@@ -151,7 +156,11 @@ mod tests {
         let operation = get_redis_op();
 
         let db_index = 1;
-        let values = vec!["value1".to_string(), "value2".to_string(), "value3".to_string()];
+        let values = vec![
+            "value1".to_string(),
+            "value2".to_string(),
+            "value3".to_string(),
+        ];
 
         let result = operation.set_set_data(db_index, "set".to_string(), values);
 
@@ -187,7 +196,6 @@ mod tests {
         members_scores.insert("member2".to_string(), 2.0);
         members_scores.insert("member3".to_string(), 3.0);
 
-
         // 调用 set_hash_data 函数进行设置
         let result = operation.set_zset_data(db_index, "zset".to_string(), members_scores);
 
@@ -201,10 +209,8 @@ mod tests {
 
         let db_index = 1;
 
-
         // 调用 set_hash_data 函数进行设置
         let result = operation.get_db_key_count(db_index);
-
 
         dbg!(result);
         println!();
@@ -216,10 +222,13 @@ mod tests {
 
         let db_index = 1;
 
-
         // 调用 set_hash_data 函数进行设置
-        let result = operation.change_set(db_index, "set".to_string(), "value3111".to_string(), "v2".to_string());
-
+        let result = operation.change_set(
+            db_index,
+            "set".to_string(),
+            "value3111".to_string(),
+            "v2".to_string(),
+        );
 
         dbg!(result);
         println!();
@@ -231,10 +240,8 @@ mod tests {
 
         let db_index = 1;
 
-
         // 调用 set_hash_data 函数进行设置
         let result = operation.delete_redis_key(db_index, "del1".to_string());
-
 
         dbg!(result);
         println!();
@@ -246,15 +253,12 @@ mod tests {
 
         let db_index = 1;
 
-
         // 调用 set_hash_data 函数进行设置
         let result = operation.set_redis_key_expire(db_index, "baca".to_string(), 100);
-
 
         dbg!(result);
         println!();
     }
-
 
     fn get_redis_op() -> RedisOperation {
         // let redis_config = RedisUserPassword {

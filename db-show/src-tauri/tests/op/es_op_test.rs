@@ -16,14 +16,15 @@ mod tests {
         let conn = conn_result?;
 
         // 执行你的Elasticsearch操作，这里只是一个示例
-        let response: PingResponse = conn.ping().send().map_err(|err| Box::new(err) as Box<dyn std::error::Error>)?;
-
+        let response: PingResponse = conn
+            .ping()
+            .send()
+            .map_err(|err| Box::new(err) as Box<dyn std::error::Error>)?;
 
         // 确保ping成功
         println!("{:?}", response);
         Ok(())
     }
-
 
     #[tokio::test]
     async fn test() -> Result<(), Box<dyn std::error::Error>> {
