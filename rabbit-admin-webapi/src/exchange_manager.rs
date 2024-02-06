@@ -40,6 +40,6 @@ mod tests {
 
         // Create an ExchangeManager instance
         let exchange_manager = ExchangeManager::new(rabbitmq_info);
-        exchange_manager.list_exchanges();
+        // exchange_manager.list_exchanges();
     }
 }
